@@ -7,6 +7,7 @@
     <title>D.S.V.V. Punch - Kasteel builder</title>
 
     <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="slider.css" />
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script type="text/javascript" defer src="main.js"></script>
@@ -23,12 +24,16 @@
         <div class="chart-container">
           <canvas id="result_chart" />
         </div>
-        <div class="summary-container"></div>
+        <div class="summary-container text-container">
+          This strategy will take
+          <span class="stat" id="stat_year">x</span> years.
+        </div>
       </div>
-      <div class="input-container" id="input_container">
+      <div class="input-container text-container" id="input_container">
         <p class="description">Explaination</p>
+        <div class="divider"></div>
         <div class="input-row">
-          <label for="beer_contribution">Beer price</label>
+          <label for="beer_contribution">Beer contribution</label>
           <input
             type="range"
             name="beer_contribution"
@@ -37,6 +42,9 @@
             min="0"
             step="0.05"
           />
+          <span class="range-value">
+            <span id="beer_contribution_value" data-type="euro"></span
+          ></span>
         </div>
         <div class="input-row">
           <label for="pand_contribution">Pand contribution</label>
@@ -48,6 +56,47 @@
             min="0"
             step="5"
           />
+          <span class="range-value">
+            <span id="pand_contribution_value" data-type="euro"></span
+          ></span>
+        </div>
+        <div class="input-row">
+          <label for="buy_together">Buy together</label>
+          <label class="switch">
+            <input type="checkbox" name="buy_together" id="buy_together" />
+            <span class="slider round"></span>
+          </label>
+        </div>
+        <div class="divider"></div>
+        <div class="input-row">
+          <label for="inflation_rate">Inflation</label>
+          <input
+            type="range"
+            class="range"
+            name="inflation_rate"
+            id="inflation_rate"
+            max="0.05"
+            min="0"
+            step="0.005"
+          />
+          <span class="range-value">
+            <span id="inflation_rate_value" data-type="percentage"></span
+          ></span>
+        </div>
+        <div class="input-row">
+          <label for="interest_rate">Interest</label>
+          <input
+            type="range"
+            class="range"
+            name="interest_rate"
+            id="interest_rate"
+            max="0.1"
+            min="0"
+            step="0.005"
+          />
+          <span class="range-value">
+            <span id="interest_rate_value" data-type="percentage"></span
+          ></span>
         </div>
       </div>
     </content>
