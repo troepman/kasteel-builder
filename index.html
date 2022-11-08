@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>D.S.V.V. Punch - Kasteel builder</title>
+
+    <link rel="stylesheet" href="index.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script type="text/javascript" defer src="main.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>
+        <span class="little">D.S.V.V. Punch - </span>K.A.S.T.E.E.L. Builder
+      </h1>
+      <h2>Klote Afkorting Suggestief Te Effectief Enorm Lenen</h2>
+    </header>
+    <content>
+      <div class="result-container">
+        <div class="chart-container">
+          <canvas id="result_chart" />
+        </div>
+        <div class="summary-container"></div>
+      </div>
+      <div class="input-container" id="input_container">
+        <p class="description">Explaination</p>
+        <div class="input-row">
+          <label for="beer_contribution">Beer price</label>
+          <input
+            type="range"
+            name="beer_contribution"
+            id="beer_contribution"
+            max="1"
+            min="0"
+            step="0.05"
+          />
+        </div>
+        <div class="input-row">
+          <label for="pand_contribution">Pand contribution</label>
+          <input
+            type="range"
+            name="pand_contribution"
+            id="pand_contribution"
+            max="50"
+            min="0"
+            step="5"
+          />
+        </div>
+      </div>
+    </content>
+    <footer>
+      <span>&#169;W.O.O.N.B.O.O.T. - Nog zo'n afkorting</span>
+    </footer>
+  </body>
+</html>
