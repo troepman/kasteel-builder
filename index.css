@@ -69,6 +69,7 @@ content > div:not(:last-child) {
     display: flex;
     flex-direction: column;
     align-items: stretch;
+    justify-content: stretch;
 }
 .text-container {
     /* background-color: #efefef; */
@@ -77,16 +78,18 @@ content > div:not(:last-child) {
     border: 1px solid #afafaf;
     padding: 10px;
 }
-.input-container {
-    flex: 0 0 var(--input-container-width);
-    
-}
 /* result arrangement */
 .chart-container {
     position: relative;
     /* width: 50vw; */
     margin-bottom: 10px;
     flex: 0 0 auto;
+}
+.chart-container.chart1 {
+    flex-grow:1
+}
+.chart-container.chart2{
+    height: 125px;
 }
 .summary-container {
     flex: 1 0 auto;
@@ -96,6 +99,10 @@ span.stat {
 }
 
 /* Input arrangment */
+.input-container {
+    flex: 0 0 var(--input-container-width);
+    
+}
 .input-row {
     position: relative;
     margin-block: 15px;
