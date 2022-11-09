@@ -1,6 +1,11 @@
+const formatters = {
+    euro: (val) => (new Intl.NumberFormat('nl-NL', {style:'currency', currency:'EUR'}).format(val)),
+    percentage: (val) => (new Intl.NumberFormat('nl-NL', {style:'percent', minimumFractionDigits:1}).format(val)),
+    hectoLiter: (val) => (new Intl.NumberFormat('nl-NL', {style:'decimal', minimumFractionDigits:0}).format(val) + " hL")
+}
 
 function compute(options, numberOfYears=40) {
-    const {target, beerContribution, pandContribution, inflationRate, interestRate, yearlyBeerConsumption, numberOfMembers} = options;
+    const {target, beerContribution, pandContribution, inflationRate, interestRate, yearlyBeerConsumption, numberOfMembers, otherContribution} = options;
     console.log(options)
 
     const yearStates = []
@@ -10,12 +15,15 @@ function compute(options, numberOfYears=40) {
         incomeBeer: 0,
         incomePand: 0,
         incomeInterest: 0,
+        incomeOther: 0,
         savingsBeer: 0,
         savingsContribution: 0,
+        savingsOther:0,
         savingsInterest: 0,
         target,
         beerContribution,
         pandContribution,
+        otherContribution,
     }
 
     while (currentState.year <= numberOfYears) {
@@ -25,21 +33,26 @@ function compute(options, numberOfYears=40) {
         // Compute the income
         incomeBeer = yearlyBeerConsumption * currentState.beerContribution;
         incomeContribution = numberOfMembers * currentState.pandContribution;
+        incomeOther = otherContribution;
+        
         incomeInterest = interestRate * currentState.savings;
+        
 
         // Compute the new state at the end of the year
         currentState = {
             year: currentState.year+1,
-            savings: currentState.savings + incomeBeer + incomeContribution + incomeInterest,
+            savings: currentState.savings + incomeBeer + incomeContribution + incomeInterest + incomeOther,
             incomeBeer,
             incomeContribution,
             incomeInterest,
             savingsBeer: currentState.savingsBeer + incomeBeer,
             savingsContribution: currentState.savingsContribution + incomeContribution,
             savingsInterest: currentState.savingsInterest + incomeInterest,
+            savingsOther: currentState.savingsOther + incomeOther,
             target: currentState.target * (1 + inflationRate),
             beerContribution: currentState.beerContribution * (1 + inflationRate),
-            pandContribution: currentState.pandContribution * (1 + inflationRate)
+            pandContribution: currentState.pandContribution * (1 + inflationRate),
+            otherContribution: currentState.otherContribution * (1 + inflationRate)
         }
     }
     return yearStates;
@@ -58,6 +71,7 @@ function updateChart(yearStates) {
         interest: '#1d4e9a',
         contribution: '#873e23',
         beer: '#ECD578',
+        misc: '#b2c756',
         target: '#888888',
         background: '8f'
     }
@@ -69,7 +83,7 @@ function updateChart(yearStates) {
             backgroundColor: colors.interest + colors.background,
             borderColor: colors.interest,
             fill: true,
-            order:3,
+            order:4,
         },{
             label:'Pand contribution',
             data: yearStates.map(k => k.savingsContribution),
@@ -80,10 +94,17 @@ function updateChart(yearStates) {
         }, {
             label:'Beer contribution',
             data: yearStates.map(k => k.savingsContribution + k.savingsBeer),
-            backgroundColor: colors.beer  + colors.background,
+            backgroundColor: colors.beer + colors.background,
             borderColor: colors.beer,
             fill: true,
             order:2
+        }, {
+            label: 'Miscellaneous contribution',
+            data: yearStates.map(k => k.savingsContribution + k.savingsBeer + k.savingsOther),
+            backgroundColor: colors.misc + colors.background,
+            borderColor: colors.misc,
+            fill: true,
+            order: 3
         }, {
             label:"Target",
             data: yearStates.map(k => k.target),
@@ -120,6 +141,7 @@ function updateSummary(yearStates) {
     const stats = extractTargetReachedYear(yearStates);
 
     document.getElementById('stat_year').innerText = stats.year;
+    document.getElementById('stat_savings').innerText = formatters.euro(stats.savings);
 }
 
 function onUpdate() {
@@ -130,8 +152,8 @@ function onUpdate() {
     const inflationRate = Number(document.getElementById('inflation_rate').value);
     const interestRate = Number(document.getElementById('interest_rate').value);
     const buyTogether = document.getElementById("buy_together").checked;
-
-    console.log(inflationRate)
+    const otherContribution = Number(document.getElementById('other_contribution').value);
+    const yearlyBeerConsumption = Number(document.getElementById('beer_quantity').value)
 
     let target = 250000;
     if (buyTogether) {
@@ -139,15 +161,15 @@ function onUpdate() {
     }
 
     const result = compute({
-        target, beerContribution, pandContribution, inflationRate, interestRate, yearlyBeerConsumption:7000*3.33, numberOfMembers:350
+        target, beerContribution, pandContribution, inflationRate, interestRate, yearlyBeerConsumption:yearlyBeerConsumption*100*3.33, numberOfMembers:350, otherContribution
     })
 
     updateChart(result);
-
     updateSummary(result);
 }
 
 let updateTimeout;
+
 
 function onChange() {
     if (updateTimeout) {
@@ -157,10 +179,7 @@ function onChange() {
 }
 
 function showVal(ev) {
-    const formatters = {
-        euro: (val) => (new Intl.NumberFormat('nl-NL', {style:'currency', currency:'EUR'}).format(val)),
-        percentage : (val) => (new Intl.NumberFormat('nl-NL', {style:'percent', minimumFractionDigits:1}).format(val))
-    }
+    
     const spanEl = document.getElementById(ev.target.id + "_value");
     if (!spanEl) return;
     if (spanEl.dataset.type in formatters){
@@ -218,7 +237,9 @@ document.addEventListener('DOMContentLoaded', () => {
         "beer_contribution": 0.20,
         "pand_contribution": 10,
         "inflation_rate": 0.03,
-        "interest_rate": 0.04
+        "interest_rate": 0.04,
+        "other_contribution": 1000,
+        "beer_quantity": 70
     }
     const inputContainer = document.getElementById('input_container')
     for (const inputEl of inputContainer.getElementsByTagName('input')) {
