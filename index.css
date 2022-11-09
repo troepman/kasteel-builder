@@ -1,5 +1,6 @@
 :root {
     --punch-blue: #1d4e9a;
+    --input-container-width: 350px;
 }
 html, body {
     padding: 0px;
@@ -60,7 +61,7 @@ content > div:not(:last-child) {
     margin-right: unset;
 } */
 .result-container {
-    width: calc(80vw - 300px);
+    width: calc(80vw - var(--input-container-width));
     flex: 0 0 auto;
     display: flex;
     flex-direction: column;
@@ -74,7 +75,7 @@ content > div:not(:last-child) {
     padding: 10px;
 }
 .input-container {
-    flex: 0 0 300px;
+    flex: 0 0 var(--input-container-width);
     
 }
 /* result arrangement */
@@ -95,6 +96,10 @@ span.stat {
 .input-row {
     position: relative;
     margin-block: 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    flex-wrap: wrap;
 }
 input[type="range"]{
     outline: none;
@@ -102,6 +107,7 @@ input[type="range"]{
     -webkit-appearance: none;
     background: #d3d3d3; 
     height: 5px;
+    flex: 0 0 40%;
 }
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
@@ -113,11 +119,16 @@ input[type="range"]::-webkit-slider-thumb {
     border-radius: 100%;
 }
 label {
+    box-sizing: border-box;
     display: inline-block;
-    width: 100px;
+    flex: 0 0 auto;
+    width: 110px;
+    padding-right: 10px;
 }
 .range-value {
-    font-size: 12pt;
+    padding-left: 10px;
+    flex: 1 0 10%;
+    font-size: 10pt;
     color: #8f8f8f
 }
 .input-row .explanation {
@@ -159,7 +170,7 @@ label {
         padding-right: 10px;
     }
     .result-container {
-        width: calc(100vw - 50px - 300px);
+        width: calc(100vw - 50px - var(--input-container-width));
     }
 }
 
