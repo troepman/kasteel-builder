@@ -6,6 +6,9 @@
 
     <title>D.S.V.V. Punch - Kasteel builder</title>
 
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+
     <link rel="stylesheet" href="index.css" />
     <link rel="stylesheet" href="slider.css" />
 
@@ -43,8 +46,16 @@
             step="0.05"
           />
           <span class="range-value">
-            <span id="beer_contribution_value" data-type="euro"></span
-          ></span>
+            <span id="beer_contribution_value" data-type="euro"></span>
+          </span>
+          <div class="explanation" data-toggle-target="beer_contribution_expl">
+            Explanation on the thing
+          </div>
+          <span
+            class="explanation-toggle"
+            data-toggle-for="beer_contribution_expl"
+            >?</span
+          >
         </div>
         <div class="input-row">
           <label for="pand_contribution">Pand contribution</label>

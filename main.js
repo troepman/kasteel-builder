@@ -170,6 +170,49 @@ function showVal(ev) {
     }
 }
 
+function recurseToggles(container, {targets, toggles}) {
+    if ('toggleTarget' in container.dataset){
+        targets[container.dataset['toggleTarget']] = container;
+        return;
+    }
+    if ('toggleFor' in container.dataset){
+        toggles.push(container);
+        return;
+    }
+    for (const child of container.children) {
+        recurseToggles(child, {targets, toggles})
+    }
+}
+function initializeToggles(container){
+    const targets = {}
+    const toggles = []
+    
+    recurseToggles(container, {targets, toggles});
+
+    console.log(targets)
+    console.log(toggles)
+
+    function hideAll(){
+        for (const key in targets){
+            targets[key].style.display = 'none';
+        }
+    }
+    function toggleSpecific(name) {
+        if (targets[name].style.display === 'none') {
+            hideAll();
+            targets[name].style.display = '';
+        } else {
+            hideAll();
+        }
+    }
+
+    for (const toggle of toggles) {
+        toggle.addEventListener('click', () => toggleSpecific(toggle.dataset['toggleFor']));
+    }
+
+    hideAll();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const defaultValues = {
         "beer_contribution": 0.20,
@@ -177,8 +220,8 @@ document.addEventListener('DOMContentLoaded', () => {
         "inflation_rate": 0.03,
         "interest_rate": 0.04
     }
-
-    for (const inputEl of document.getElementById('input_container').getElementsByTagName('input')) {
+    const inputContainer = document.getElementById('input_container')
+    for (const inputEl of inputContainer.getElementsByTagName('input')) {
         inputEl.addEventListener('change', onChange);
         inputEl.addEventListener('input', showVal);
         if (inputEl.id in defaultValues){
@@ -187,4 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showVal({target: inputEl})
     }
     onUpdate();
+
+    // Set up toggles
+    initializeToggles(inputContainer)
 })
