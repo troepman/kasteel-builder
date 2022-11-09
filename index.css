@@ -86,10 +86,10 @@ content > div:not(:last-child) {
     flex: 0 0 auto;
 }
 .chart-container.chart1 {
-    flex-grow:1
+    height: 400px;
 }
 .chart-container.chart2{
-    height: 125px;
+    height: 100px;
 }
 .summary-container {
     flex: 1 0 auto;
