@@ -29,11 +29,18 @@
         </div>
         <div class="summary-container text-container">
           This strategy will take
-          <span class="stat" id="stat_year">x</span> years.
+          <span class="stat" id="stat_year">x</span> years at which point we
+          have saved
+          <span class="stat" id="stat_savings" data-type="euro">x</span>.
         </div>
       </div>
       <div class="input-container text-container" id="input_container">
-        <p class="description">Explaination</p>
+        <p class="description">
+          By moving the dials one can investigate how the specifics of the
+          savings plan influence its duration and efficacy. All quantities and
+          amounts are for a normal year turnover and will be increased by the
+          inflation where appropriate.
+        </p>
         <div class="divider"></div>
         <div class="input-row">
           <label for="beer_contribution">Beer contribution</label>
@@ -48,9 +55,10 @@
           <span class="range-value">
             <span id="beer_contribution_value" data-type="euro"></span>
           </span>
-          <div class="explanation" data-toggle-target="beer_contribution_expl">
-            Explanation on the thing
-          </div>
+          <p class="explanation" data-toggle-target="beer_contribution_expl">
+            Additional amount on top of the beer price that goes towards the
+            savings.
+          </p>
           <span
             class="explanation-toggle"
             data-toggle-for="beer_contribution_expl"
@@ -70,6 +78,15 @@
           <span class="range-value">
             <span id="pand_contribution_value" data-type="euro"></span
           ></span>
+          <p class="explanation" data-toggle-target="pand_contribution_expl">
+            Additional amount on the member contribution that goes towards the
+            savings.
+          </p>
+          <span
+            class="explanation-toggle"
+            data-toggle-for="pand_contribution_expl"
+            >?</span
+          >
         </div>
         <div class="input-row">
           <label for="buy_together">Buy together</label>
@@ -77,6 +94,15 @@
             <input type="checkbox" name="buy_together" id="buy_together" />
             <span class="slider round"></span>
           </label>
+          <p class="explanation" data-toggle-target="buy_together_expl">
+            When buying something together with another party, we have to bring
+            less ourselves. This is not necessarily half since we might need a
+            bigger location and the banks will be less willing to lend due to
+            the higher risks involved.
+          </p>
+          <span class="explanation-toggle" data-toggle-for="buy_together_expl"
+            >?</span
+          >
         </div>
         <div class="divider"></div>
         <div class="input-row">
@@ -93,6 +119,12 @@
           <span class="range-value">
             <span id="inflation_rate_value" data-type="percentage"></span
           ></span>
+          <p class="explanation" data-toggle-target="inflation_rate_expl">
+            We have estimated an average inflation rate of 3% based on history.
+          </p>
+          <span class="explanation-toggle" data-toggle-for="inflation_rate_expl"
+            >?</span
+          >
         </div>
         <div class="input-row">
           <label for="interest_rate">Interest</label>
@@ -108,6 +140,63 @@
           <span class="range-value">
             <span id="interest_rate_value" data-type="percentage"></span
           ></span>
+          <p class="explanation" data-toggle-target="interest_rate_expl">
+            We expect a long term interest rate of 4%. This number is based on
+            government predictions and commonly accepted long term trends.
+            Interest is computed on a yearly base on the balance of last year.
+          </p>
+          <span class="explanation-toggle" data-toggle-for="interest_rate_expl"
+            >?</span
+          >
+        </div>
+        <div class="input-row">
+          <label for="beer_quantity">Beer consumption</label>
+          <input
+            type="range"
+            class="range"
+            name="beer_quantity"
+            id="beer_quantity"
+            max="120"
+            min="50"
+            step="5"
+          />
+          <span class="range-value">
+            <span id="beer_quantity_value" data-type="hectoLiter"></span
+          ></span>
+          <p class="explanation" data-toggle-target="beer_quantity_expl">
+            Due to Covid and a public reduction in consumption of alcohol, we
+            expect, considering our current sub renting situation, a beer
+            consumption of 70 hL. Onboarding additional renters is beneficial
+            for the plan.
+          </p>
+          <span class="explanation-toggle" data-toggle-for="beer_quantity_expl"
+            >?</span
+          >
+        </div>
+        <div class="input-row">
+          <label for="other_contribution">Miscellaneous contribution</label>
+          <input
+            type="range"
+            class="range"
+            name="other_contribution"
+            id="other_contribution"
+            max="5000"
+            min="0"
+            step="100"
+          />
+          <span class="range-value">
+            <span id="other_contribution_value" data-type="euro"></span
+          ></span>
+          <p class="explanation" data-toggle-target="other_contribution_expl">
+            We expect that the foundation will actively search for new forms
+            contribution. For example special members and old members can be
+            asked for a small donation.
+          </p>
+          <span
+            class="explanation-toggle"
+            data-toggle-for="other_contribution_expl"
+            >?</span
+          >
         </div>
       </div>
     </content>
