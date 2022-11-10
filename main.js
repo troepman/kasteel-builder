@@ -1,6 +1,6 @@
 const formatters = {
     euro: (val) => (new Intl.NumberFormat('nl-NL', {style:'currency', currency:'EUR'}).format(val)),
-    largeEuro: (val) => ("&euro;" + new Intl.NumberFormat('nl-NL', {style: 'decimal', minimumFractionDigits:0}).format(val/1000)+"k"),
+    largeEuro: (val) => ("€ " + new Intl.NumberFormat('nl-NL', {style: 'decimal', minimumFractionDigits:0}).format(val/1000)+"k"),
     percentage: (val) => (new Intl.NumberFormat('nl-NL', {style:'percent', minimumFractionDigits:1}).format(val)),
     hectoLiter: (val) => (new Intl.NumberFormat('nl-NL', {style:'decimal', minimumFractionDigits:0}).format(val) + " hL")
 }
@@ -133,7 +133,17 @@ function updateChart1(yearStates) {
                     yAxis:{
                         axis:'y',
                         min: 0, 
-                        max: 1000000
+                        max: 1000000,
+                        ticks: {
+                            callback: formatters.largeEuro
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: (item) => formatters.euro(item.raw)
+                        }
                     }
                 }
             }
@@ -194,18 +204,27 @@ function updateChart2(yearStates) {
                 maintainAspectRatio: false,
                 responsive: true,
                 indexAxis: 'y',
-                plugins: {legend: {
-                    display: true
-                 },
+                plugins: {
+                    legend: {
+                        display: true
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: (item) => formatters.euro(item.raw)
+                        }
+                    }
                 },
                 scales: {
                     yAxis:{
                         axis:'y',
-                        stacked: true
+                        stacked: true,
                     },
                     xAxis: {
                         axis:'x',
-                        stacked: true
+                        stacked: true,
+                        ticks:{
+                            callback: formatters.largeEuro
+                        }
                     }
                 }
             }
