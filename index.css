@@ -119,6 +119,9 @@ input[type="range"]{
     height: 5px;
     flex: 0 0 40%;
 }
+input[type="range"]:disabled{
+    background: #c3c3c3;
+}
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
@@ -128,7 +131,10 @@ input[type="range"]::-webkit-slider-thumb {
     height:14px;
     border-radius: 100%;
 }
-label {
+input[type="range"]:disabled::-webkit-slider-thumb{
+    background: #d3d3d3;
+}
+.input-row > label {
     box-sizing: border-box;
     display: inline-block;
     flex: 0 0 auto;
@@ -169,10 +175,21 @@ label {
     background: #f0f0f0;
 }
 .divider {
-    border-bottom: 1px solid #afafaf;
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    align-items: center;
     margin-left: -5px;
     margin-right: -5px;
 }
+.divider > label {
+    margin-left: 5px;
+}
+.divider .line {
+    flex: 1 0 1px;
+    border-bottom: 1px solid #afafaf;
+}
+
 
 @media screen and (max-width: 1000px) {
     content {

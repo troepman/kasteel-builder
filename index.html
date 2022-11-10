@@ -44,7 +44,9 @@
           amounts are for a normal year turnover and will be increased by the
           inflation where appropriate.
         </p>
-        <div class="divider"></div>
+        <div class="divider">
+          <div class="line"></div>
+        </div>
         <div class="input-row">
           <label for="beer_contribution">Beer contribution</label>
           <input
@@ -91,23 +93,18 @@
             >?</span
           >
         </div>
-        <div class="input-row">
-          <label for="buy_together">Buy together</label>
+        <div class="divider">
+          <div class="line"></div>
+          <label for="enable_advanced">Advanced</label>
           <label class="switch">
-            <input type="checkbox" name="buy_together" id="buy_together" />
+            <input
+              type="checkbox"
+              name="enable_advanced"
+              id="enable_advanced"
+            />
             <span class="slider round"></span>
           </label>
-          <p class="explanation" data-toggle-target="buy_together_expl">
-            When buying something together with another party, we have to bring
-            less ourselves. This is not necessarily half since we might need a
-            bigger location and the banks will be less willing to lend due to
-            the higher risks involved.
-          </p>
-          <span class="explanation-toggle" data-toggle-for="buy_together_expl"
-            >?</span
-          >
         </div>
-        <div class="divider"></div>
         <div class="input-row">
           <label for="inflation_rate">Inflation</label>
           <input
@@ -198,6 +195,29 @@
           <span
             class="explanation-toggle"
             data-toggle-for="other_contribution_expl"
+            >?</span
+          >
+        </div>
+        <div class="input-row">
+          <label for="target_amount">Target</label>
+          <input
+            type="range"
+            class="range"
+            name="target_amount"
+            id="target_amount"
+            max="500000"
+            min="100000"
+            step="50000"
+          />
+          <span class="range-value">
+            <span id="target_amount_value" data-type="euro"></span
+          ></span>
+          <p class="explanation" data-toggle-target="buy_together_expl">
+            The target amount changes depending on our wishes and oru buying
+            situation. When buying something together with another party, we
+            have to bring less ourselves.
+          </p>
+          <span class="explanation-toggle" data-toggle-for="buy_together_expl"
             >?</span
           >
         </div>

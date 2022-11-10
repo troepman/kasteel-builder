@@ -1,5 +1,6 @@
 const formatters = {
     euro: (val) => (new Intl.NumberFormat('nl-NL', {style:'currency', currency:'EUR'}).format(val)),
+    largeEuro: (val) => ("&euro;" + new Intl.NumberFormat('nl-NL', {style: 'decimal', minimumFractionDigits:0}).format(val/1000)+"k"),
     percentage: (val) => (new Intl.NumberFormat('nl-NL', {style:'percent', minimumFractionDigits:1}).format(val)),
     hectoLiter: (val) => (new Intl.NumberFormat('nl-NL', {style:'decimal', minimumFractionDigits:0}).format(val) + " hL")
 }
@@ -227,17 +228,19 @@ function onUpdate() {
     const pandContribution = Number(document.getElementById('pand_contribution').value);
     const inflationRate = Number(document.getElementById('inflation_rate').value);
     const interestRate = Number(document.getElementById('interest_rate').value);
-    const buyTogether = document.getElementById("buy_together").checked;
+    const target = Number(document.getElementById('target_amount').value);
     const otherContribution = Number(document.getElementById('other_contribution').value);
     const yearlyBeerConsumption = Number(document.getElementById('beer_quantity').value)
 
-    let target = 250000;
-    if (buyTogether) {
-        target = target * (4/5);
-    }
-
     const result = compute({
-        target, beerContribution, pandContribution, inflationRate, interestRate, yearlyBeerConsumption:yearlyBeerConsumption*100*3.33, numberOfMembers:350, otherContribution
+        target, 
+        beerContribution, 
+        pandContribution, 
+        inflationRate, 
+        interestRate, 
+        yearlyBeerConsumption: yearlyBeerConsumption * 100 * 3.33, 
+        numberOfMembers: 350, 
+        otherContribution
     })
 
     updateChart1(result);
@@ -279,7 +282,7 @@ function recurseToggles(container, {targets, toggles}) {
         recurseToggles(child, {targets, toggles})
     }
 }
-function initializeToggles(container){
+function initializeInformationToggles(container){
     const targets = {}
     const toggles = []
     
@@ -309,6 +312,28 @@ function initializeToggles(container){
     hideAll();
 }
 
+function initializeAdvancedToggles() {
+    const advancedInputs = [
+        document.getElementById('inflation_rate'),
+        document.getElementById('interest_rate'),
+        document.getElementById('target_amount'),
+        document.getElementById('other_contribution'),
+        document.getElementById('beer_quantity')
+    ]
+    function onChange(ev) {
+        const disabled = !ev.target.checked;
+        console.log('Setting', disabled)
+        for (const advancedInput of advancedInputs){
+            advancedInput.disabled = disabled;
+        }
+    }
+    const toggle = document.getElementById('enable_advanced');
+    toggle.addEventListener('change', onChange)
+    toggle.checked = false;
+    onChange({target: toggle});
+
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const defaultValues = {
         "beer_contribution": 0.20,
@@ -316,7 +341,8 @@ document.addEventListener('DOMContentLoaded', () => {
         "inflation_rate": 0.03,
         "interest_rate": 0.04,
         "other_contribution": 1000,
-        "beer_quantity": 70
+        "beer_quantity": 70,
+        "target_amount": 250000,
     }
     const inputContainer = document.getElementById('input_container')
     for (const inputEl of inputContainer.getElementsByTagName('input')) {
@@ -330,5 +356,6 @@ document.addEventListener('DOMContentLoaded', () => {
     onUpdate();
 
     // Set up toggles
-    initializeToggles(inputContainer)
+    initializeInformationToggles(inputContainer);
+    initializeAdvancedToggles();
 })
