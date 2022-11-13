@@ -4,6 +4,17 @@ const formatters = {
     percentage: (val) => (new Intl.NumberFormat('nl-NL', {style:'percent', minimumFractionDigits:1}).format(val)),
     hectoLiter: (val) => (new Intl.NumberFormat('nl-NL', {style:'decimal', minimumFractionDigits:0}).format(val) + " hL")
 }
+const defaultValues = {
+    "beer_contribution": 0.20,
+    "pand_contribution": 10,
+}
+const advancedDefaultValues = {
+    "inflation_rate": 0.03,
+    "interest_rate": 0.04,
+    "other_contribution": 1000,
+    "beer_quantity": 70,
+    "target_amount": 1000000,
+}
 
 function compute(options, numberOfYears=40) {
     const {target, beerContribution, pandContribution, inflationRate, interestRate, yearlyBeerConsumption, numberOfMembers, otherContribution} = options;
@@ -61,7 +72,6 @@ function compute(options, numberOfYears=40) {
 
 function extractTargetReachedYear(yearStates) {
     const targetReached = yearStates.reduceRight((current, state) => (state.target < state.savings ? state : current))
-
     return targetReached
 }
 
@@ -136,7 +146,11 @@ function updateChart1(yearStates) {
                         max: 1000000,
                         ticks: {
                             callback: formatters.largeEuro
-                        }
+                        },
+                        title: {display: true, text: "Savings"}
+                    }, 
+                    xAxis: {
+                        title: {display: true, text: "Years"}
                     }
                 },
                 plugins: {
@@ -154,7 +168,6 @@ function updateChart1(yearStates) {
 
 function updateChart2(yearStates) {
     const lastYear = extractTargetReachedYear(yearStates);
-    console.log('last year', lastYear)
 
     const data = {
         labels: [""],
@@ -206,7 +219,8 @@ function updateChart2(yearStates) {
                 indexAxis: 'y',
                 plugins: {
                     legend: {
-                        display: true
+                        display: true,
+                        position: 'bottom'
                     },
                     tooltip: {
                         callbacks: {
@@ -224,7 +238,8 @@ function updateChart2(yearStates) {
                         stacked: true,
                         ticks:{
                             callback: formatters.largeEuro
-                        }
+                        },
+                        title: {display: true, text:"Savings"}
                     }
                 }
             }
@@ -235,8 +250,13 @@ function updateChart2(yearStates) {
 
 function updateSummary(yearStates) {
     const stats = extractTargetReachedYear(yearStates);
+    if (stats.savings < stats.target){
+        document.getElementById('stat_year').innerText = `more than ${stats.year}`;
+    } else {
+        document.getElementById('stat_year').innerText = stats.year;
+    }
 
-    document.getElementById('stat_year').innerText = stats.year;
+    
     document.getElementById('stat_savings').innerText = formatters.euro(stats.savings);
 }
 
@@ -247,7 +267,8 @@ function onUpdate() {
     const pandContribution = Number(document.getElementById('pand_contribution').value);
     const inflationRate = Number(document.getElementById('inflation_rate').value);
     const interestRate = Number(document.getElementById('interest_rate').value);
-    const target = Number(document.getElementById('target_amount').value);
+    const target = Number(document.getElementById('target_amount').value)*0.25;
+    console.log(document.getElementById('target_amount').value)
     const otherContribution = Number(document.getElementById('other_contribution').value);
     const yearlyBeerConsumption = Number(document.getElementById('beer_quantity').value)
 
@@ -345,6 +366,10 @@ function initializeAdvancedToggles() {
         for (const advancedInput of advancedInputs){
             advancedInput.disabled = disabled;
         }
+
+        if (disabled) {
+            setDefaultValues(advancedDefaultValues);
+        }
     }
     const toggle = document.getElementById('enable_advanced');
     toggle.addEventListener('change', onChange)
@@ -353,25 +378,26 @@ function initializeAdvancedToggles() {
 
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const defaultValues = {
-        "beer_contribution": 0.20,
-        "pand_contribution": 10,
-        "inflation_rate": 0.03,
-        "interest_rate": 0.04,
-        "other_contribution": 1000,
-        "beer_quantity": 70,
-        "target_amount": 250000,
+function setDefaultValues(defaultValues){
+    for (const inputId in defaultValues) {
+        const el = document.getElementById(inputId);
+        if (el) {
+            el.value = defaultValues[inputId]
+            showVal({target: el})
+        }
     }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+
     const inputContainer = document.getElementById('input_container')
     for (const inputEl of inputContainer.getElementsByTagName('input')) {
         inputEl.addEventListener('change', onChange);
         inputEl.addEventListener('input', showVal);
-        if (inputEl.id in defaultValues){
-            inputEl.value = defaultValues[inputEl.id]
-        }
-        showVal({target: inputEl})
     }
+    
+
+    setDefaultValues({...defaultValues, ...advancedDefaultValues});
     onUpdate();
 
     // Set up toggles
