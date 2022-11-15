@@ -1,6 +1,6 @@
 const formatters = {
     euro: (val) => (new Intl.NumberFormat('nl-NL', {style:'currency', currency:'EUR'}).format(val)),
-    largeEuro: (val) => ("€ " + new Intl.NumberFormat('nl-NL', {style: 'decimal', minimumFractionDigits:0}).format(val/1000)+"k"),
+    largeEuro: (val) => ("€ " + new Intl.NumberFormat('nl-NL', {style: 'decimal', minimumFractionDigits:0, maximumFractionDigits:0}).format(val/1000)+"k"),
     percentage: (val) => (new Intl.NumberFormat('nl-NL', {style:'percent', minimumFractionDigits:1}).format(val)),
     hectoLiter: (val) => (new Intl.NumberFormat('nl-NL', {style:'decimal', minimumFractionDigits:0}).format(val) + " hL")
 }
@@ -75,6 +75,69 @@ function extractTargetReachedYear(yearStates) {
     return targetReached
 }
 
+const markDataPointsPlugin = {
+    getLinePosition: function (chart, pointIndex, dataSetIndex) {
+        const meta = chart.getDatasetMeta(dataSetIndex);
+        const data = meta.data;
+        return [data[pointIndex].x, data[pointIndex].y];
+    },
+    renderLines: function (chartInstance, options) {
+        const {pointIndex, dataSetIndex} = options;
+        
+        const [pointX, pointY] = this.getLinePosition(chartInstance, pointIndex, dataSetIndex);
+        const dataset = chartInstance.config.data.datasets[dataSetIndex]
+        const xTick = chartInstance.config.data.labels[pointIndex];
+        const yTick = dataset.data[pointIndex];
+
+        const yScale = Object.values(chartInstance.scales).find(scale => scale.axis === 'y');
+        const xScale = Object.values(chartInstance.scales).find(scale => scale.axis === 'x');
+
+        const context = chartInstance.ctx;
+  
+        // render vertical line
+        context.beginPath();
+        context.strokeStyle = dataset.borderColor;
+        context.lineWidth = dataset.borderWidth ?? 2;
+        context.moveTo(xScale.left, pointY);
+        context.lineTo(pointX, pointY);
+        context.lineTo(pointX, yScale.bottom);
+        context.stroke();
+  
+        // write labels
+        context.fillStyle = dataset.borderColor;
+        context.textAlign = 'center';
+        // x tick
+        context.fillText(formatters.largeEuro(yTick), xScale.left + (pointX- xScale.left) / 2, pointY-8);
+    },
+    parseOptions: function(options) {
+        const defaultOptions = {
+            dataSetIndex: 0,
+            xTick: false,
+            yTick: false
+        }
+        if (typeof(options) === 'number'){
+            return {
+                pointIndex: options,
+                ...defaultOptions
+            }
+        }
+        return {
+            ...defaultOptions,
+            ...options
+        }
+    },
+    afterDatasetsDraw: function (chart, easing) {
+        const lineAtIndex = chart.config.options.lineAtIndex;
+        if (lineAtIndex) {
+            lineAtIndex.forEach(pointIndex => 
+                {
+                    const options = this.parseOptions(pointIndex);
+                    this.renderLines(chart, options);
+                }
+            );
+        }
+    }
+};
 let myChart1;
 let myChart2;
 const colors = {
@@ -88,7 +151,7 @@ const colors = {
 const labels = ["Interest", "Pand contribution", "Beer contribution", "Miscellaneous contribution", "Target" ]
 
 function updateChart1(yearStates) {
-    
+    const finalYear = extractTargetReachedYear(yearStates)
     const data = {
         labels: yearStates.map(k => k.year),
         datasets: [{
@@ -159,8 +222,12 @@ function updateChart1(yearStates) {
                             label: (item) => formatters.euro(item.raw)
                         }
                     }
-                }
-            }
+
+                },
+                lineAtIndex: finalYear ? [finalYear.year] : undefined
+            },
+            plugins: [markDataPointsPlugin],
+            
         }
         myChart1 = new Chart(ctx, config);
     }
