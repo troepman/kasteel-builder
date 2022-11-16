@@ -148,7 +148,7 @@ const colors = {
     target: '#888888',
     background: '8f'
 }
-const labels = ["Interest", "Pand contribution", "Beer contribution", "Miscellaneous contribution", "Target" ]
+const labels = ["Interest", "Contribution", "Beer", "Miscellaneous", "Target" ]
 
 function updateChart1(yearStates) {
     const finalYear = extractTargetReachedYear(yearStates)

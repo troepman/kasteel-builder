@@ -89,7 +89,7 @@ content > div:not(:last-child) {
     height: 400px;
 }
 .chart-container.chart2{
-    height: 100px;
+    height: 124px;
 }
 .summary-container {
     flex: 1 0 auto;
