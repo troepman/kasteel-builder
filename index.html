@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>D.S.V.V. Punch - Kasteel builder</title>
+    <title>D.S.V.V. "Punch" - KASTEEL builder</title>
 
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
@@ -17,10 +17,8 @@
   </head>
   <body>
     <header>
-      <h1>
-        <span class="little">D.S.V.V. Punch - </span>K.A.S.T.E.E.L. Builder
-      </h1>
-      <h2>Klote Afkorting Suggestief Te Effectief Enorm Lenen</h2>
+      <h1><span class="little">D.S.V.V. "Punch" - </span>KASTEEL Builder</h1>
+      <h2>Kommando Actief Sparen Tanken En Eenmalig Lenen</h2>
     </header>
     <content>
       <div class="result-container">
@@ -40,9 +38,11 @@
       <div class="input-container text-container" id="input_container">
         <p class="description">
           By moving the dials one can investigate how the specifics of the
-          savings plan influence its duration and efficacy. All quantities and
+          savings plan influence its duration and efficiency. All quantities and
           amounts are for a normal year turnover and will be increased by the
-          inflation where appropriate.
+          inflation where appropriate. It is possible that there will not be any
+          income in a year (in case of (another) COVID-crisis for instance),
+          then the KASTEEL will be put on hold.
         </p>
         <div class="divider">
           <div class="line"></div>
@@ -62,7 +62,9 @@
           </span>
           <p class="explanation" data-toggle-target="beer_contribution_expl">
             Additional amount on top of the beer price that goes towards the
-            savings.
+            savings. If the beer price would rise due to normal causes, the new
+            beer price will always be the price which SPP needs to turn profit,
+            plus this amount.
           </p>
           <span
             class="explanation-toggle"
@@ -85,7 +87,8 @@
           ></span>
           <p class="explanation" data-toggle-target="pand_contribution_expl">
             Additional amount on the member contribution that goes towards the
-            savings.
+            savings on top of the contribution needed for the association to
+            function properly.
           </p>
           <span
             class="explanation-toggle"
@@ -95,7 +98,7 @@
         </div>
         <div class="divider">
           <div class="line"></div>
-          <label for="enable_advanced">Advanced</label>
+          <label for="enable_advanced">Assumptions</label>
           <label class="switch">
             <input
               type="checkbox"
@@ -120,7 +123,8 @@
             <span id="inflation_rate_value" data-type="percentage"></span
           ></span>
           <p class="explanation" data-toggle-target="inflation_rate_expl">
-            We have estimated an average inflation rate of 3% based on history.
+            We have estimated an average inflation rate of 3% based on history
+            and general accepted economical standards.
           </p>
           <span class="explanation-toggle" data-toggle-for="inflation_rate_expl"
             >?</span
@@ -143,7 +147,8 @@
           <p class="explanation" data-toggle-target="interest_rate_expl">
             We expect a long term interest rate of 4%. This number is based on
             government predictions and commonly accepted long term trends.
-            Interest is computed on a yearly base on the balance of last year.
+            Interest is computed on a yearly base on the balance of the previous
+            year.
           </p>
           <span class="explanation-toggle" data-toggle-for="interest_rate_expl"
             >?</span
@@ -165,7 +170,7 @@
           ></span>
           <p class="explanation" data-toggle-target="beer_quantity_expl">
             Due to Covid and a public reduction in consumption of alcohol, we
-            expect, considering our current sub renting situation, a beer
+            expect, considering our current subrenting situation, a beer
             consumption of 70 hL. Onboarding additional renters is beneficial
             for the plan.
           </p>
@@ -189,8 +194,8 @@
           ></span>
           <p class="explanation" data-toggle-target="other_contribution_expl">
             We expect that the foundation will actively search for new forms
-            contribution. For example special members and old members can be
-            asked for a small donation.
+            contribution. This can consist of donations by (former) members,
+            income by activities or sponsoring.
           </p>
           <span
             class="explanation-toggle"
@@ -215,7 +220,8 @@
           <p class="explanation" data-toggle-target="buy_together_expl">
             The cost of buying a new property. The target saving is
             approximately 25% of the cost of buying a new property according to
-            the banks.
+            the banks. A small building in the center can quickly cost 2 million
+            Euros.
           </p>
           <span class="explanation-toggle" data-toggle-for="buy_together_expl"
             >?</span
@@ -224,7 +230,10 @@
       </div>
     </content>
     <footer>
-      <span>&#169;W.O.O.N.B.O.O.T. - Nog zo'n afkorting</span>
+      <span
+        >&#169;WOONBOOT - Werkgroep Over Onderzoek Nieuwe Bar Om Ongenegeerd 't
+        Tanken.</span
+      >
     </footer>
   </body>
 </html>
