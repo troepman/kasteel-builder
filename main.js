@@ -155,7 +155,7 @@ function updateChart1(yearStates) {
     const data = {
         labels: yearStates.map(k => k.year),
         datasets: [{
-            label:labels[0],
+            label: labels[0],
             data: yearStates.map(k => k.savings),
             backgroundColor: colors.interest + colors.background,
             borderColor: colors.interest,
@@ -193,6 +193,7 @@ function updateChart1(yearStates) {
     
     if (myChart1) {
         data.datasets.forEach((d, i) => myChart1.data.datasets[i].data = d.data)
+        myChart1.options.lineAtIndex = finalYear ? [finalYear.year] : undefined;
         myChart1.update();
     } else {
         const ctx = document.getElementById('result_chart').getContext('2d');
